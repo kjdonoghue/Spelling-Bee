@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-
+import { connect } from 'react-redux'
 
 function Letters() {
 
@@ -19,20 +19,20 @@ function Letters() {
 
         while (i < 7) {
             const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]
-        
+
             //something to ensure vowels
 
             if (lettersArray.includes(randomCharacter)) {
                 continue
             } else if (randomCharacter == 'q') {
-                if(lettersArray.includes('u')) {
+                if (lettersArray.includes('u')) {
                     lettersArray.push(randomCharacter)
                     i++
                 } else if (i < 6) {
                     lettersArray.push(randomCharacter)
                     lettersArray.push('u')
-                    i = i+2
-                }            
+                    i = i + 2
+                }
             } else {
                 lettersArray.push(randomCharacter)
                 i++
@@ -43,14 +43,14 @@ function Letters() {
 
     }
 
-    const addLetter = () => {
+    // const addLetter = () => {
 
-    }
+    // }
 
     const lettersDisplay = selectedLetters.map(letter => {
-        return <button className='letterButtons' onclick={addLetter}>{letter}</button>
+        return <button className='letterButtons' onclick={() => onAddLetter(letter)}>{letter}</button>
     })
-    
+
 
 
     return (
@@ -61,4 +61,11 @@ function Letters() {
     );
 }
 
-export default Letters;
+const mapStateToDispatch = (dispatch) => {
+    return {
+        onAddLetter: (letter) => dispatch({type: ON_ADD, payload: letter})
+    }
+}
+
+
+export default connect(null, mapStateToDispatch)(Letters);
